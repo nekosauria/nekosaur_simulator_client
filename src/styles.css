@@ -1,0 +1,319 @@
+@import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Patrick+Hand&display=swap");
+
+/* ========================= Base ========================= */
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Patrick Hand", cursive;
+  background: #f7f1e8;
+  color: #1c1c1c;
+  overflow-x: hidden;
+  background-image:
+          radial-gradient(circle at 10% 20%, rgba(255,0,128,0.06), transparent 80px),
+          radial-gradient(circle at 90% 10%, rgba(0,180,255,0.06), transparent 100px),
+          radial-gradient(circle at 70% 80%, rgba(255,200,0,0.06), transparent 120px);
+}
+
+/* ========================= Layout ========================= */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========================= HEADER ========================= */
+.header {
+  position: relative;
+  overflow: hidden;
+  padding: 16px 14px;
+  text-align: center;
+  background: linear-gradient(135deg, #fff8dc, #ffe8d6);
+  border-bottom: 3px dashed #111;
+}
+
+.header::before {
+  content: "🐱🦖✨";
+  position: absolute;
+  left: 12px;
+  top: 8px;
+  font-size: 18px;
+  opacity: 0.25;
+  transform: rotate(-10deg);
+  pointer-events: none;
+}
+
+.header::after {
+  content: "🎨🖍️🐾";
+  position: absolute;
+  right: 12px;
+  top: 10px;
+  font-size: 18px;
+  opacity: 0.25;
+  transform: rotate(12deg);
+  pointer-events: none;
+}
+
+.logo {
+  font-size: 1.9rem;
+  font-family: "Permanent Marker", cursive;
+  margin: 0;
+  transform: rotate(-1deg);
+  text-shadow:
+          2px 2px 0px #ffcf33,
+          4px 4px 0px rgba(0,0,0,0.12);
+}
+
+.header-description {
+  margin-top: 6px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+
+/* ========================= MAIN ========================= */
+.main-content {
+  flex: 1;
+  padding: 30px 18px;
+}
+
+/* ========================= UPLOAD ========================= */
+.upload-section {
+  max-width: 1100px;
+  margin: auto;
+}
+
+.upload-box {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.upload-label {
+  display: inline-block;
+  padding: 16px 28px;
+  background: #ffdf5d;
+  border: 4px solid #111;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 14px;
+  transform: rotate(-1deg);
+  box-shadow:
+          6px 6px 0px #111,
+          10px 10px 0px rgba(0,0,0,0.08);
+  transition: 0.2s ease;
+}
+
+.upload-label:hover {
+  transform: rotate(1deg) scale(1.03);
+  background: #ffd43b;
+}
+
+.loading-text {
+  margin-top: 16px;
+  font-size: 1rem;
+  animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.error-text {
+  margin-top: 14px;
+  color: #d62828;
+  font-size: 1rem;
+  background: #ffe5e5;
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 2px dashed #d62828;
+}
+
+/* ========================= PREVIEW GRID ========================= */
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 22px;
+}
+
+.preview-card {
+  background: white;
+  padding: 18px;
+  border: 4px solid #111;
+  box-shadow:
+          8px 8px 0px #111,
+          14px 14px 0px rgba(0,0,0,0.08);
+  transition: 0.2s ease;
+  overflow: hidden;
+}
+
+.preview-card:nth-child(odd) { transform: rotate(-1deg); }
+.preview-card:nth-child(even) { transform: rotate(1deg); }
+.preview-card:hover { transform: scale(1.02) rotate(0deg); }
+
+.preview-card h3 {
+  margin: 8px 0 14px;
+  font-size: 1.2rem;
+  font-family: "Permanent Marker", cursive;
+}
+
+.preview-image {
+  width: 100%;
+  border-radius: 12px;
+  border: 3px solid #111;
+  object-fit: cover;
+}
+
+/* ========================= RESET BUTTON ========================= */
+.reset-button-wrap {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.reset-button {
+  display: inline-block;
+  padding: 14px 28px;
+  background: #fff;
+  border: 4px solid #111;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: "Patrick Hand", cursive;
+  font-weight: bold;
+  border-radius: 14px;
+  transform: rotate(1deg);
+  box-shadow:
+          6px 6px 0px #111,
+          10px 10px 0px rgba(0,0,0,0.08);
+  transition: 0.2s ease;
+}
+
+.reset-button:hover {
+  transform: rotate(-1deg) scale(1.03);
+  background: #ffe8d6;
+}
+
+/* ========================= FOOTER ========================= */
+.footer {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding: 10px;
+  background: linear-gradient(135deg, #fff2cc, #ffe0b2);
+  border-top: 3px dashed #111;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  opacity: 0.9;
+  flex-shrink: 0;
+}
+
+.footer::before {
+  content: "⚠️ 喵喵提醒 only cat images";
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-6deg);
+  font-size: 12px;
+  opacity: 0.35;
+  background: #fff;
+  padding: 4px 8px;
+  border: 2px dashed #111;
+  border-radius: 8px;
+}
+
+.footer::after {
+  content: var(--server-count, "🐱 API 統計中"); /* ← 改這裡，fallback 是原本的文字 */
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%) rotate(6deg);
+  font-size: 12px;
+  opacity: 0.35;
+  background: #fff;
+  padding: 4px 8px;
+  border: 2px dashed #111;
+  border-radius: 8px;
+}
+
+/* ========================= ANIMATION ========================= */
+@keyframes floaty {
+  0%   { transform: translateY(0px) rotate(-1deg); }
+  50%  { transform: translateY(-3px) rotate(1deg); }
+  100% { transform: translateY(0px) rotate(-1deg); }
+}
+
+.header::before,
+.header::after,
+.footer::before,
+.footer::after {
+  animation: floaty 4s ease-in-out infinite;
+}
+
+/* ========================= RWD ========================= */
+@media (max-width: 768px) {
+  .logo { font-size: 1.6rem; }
+  .header-description { font-size: 0.85rem; }
+  .upload-label { width: 100%; max-width: 280px; }
+  .preview-grid { grid-template-columns: 1fr; }
+  .preview-card { transform: none !important; }
+
+  .reset-button-wrap {
+    margin-top: 24px;
+    margin-bottom: 32px;
+    padding: 0 16px;
+  }
+
+  .reset-button {
+    width: 100%;
+    max-width: 280px;
+    transform: none;
+  }
+
+  .reset-button:hover {
+    transform: none;
+  }
+
+  .footer {
+    padding: 16px 10px 32px;
+  }
+
+  .footer::before{
+    display: none;
+  }
+
+  /* ← 新增 */
+  .main-content {
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y: visible;
+  }
+  .preview-card {
+    transform: none !important;
+    box-shadow: 4px 4px 0px #111; /* 手機版縮小陰影，避免溢出 */
+  }
+}
+
+/* ========================= RESULT SECTION ========================= */
+.result-section {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.result-row-title {
+  font-family: "Permanent Marker", cursive;
+  font-size: 1.2rem;
+  margin: 0;
+  padding-left: 4px;
+  border-left: 5px solid #111;
+}
+

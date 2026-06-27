@@ -317,3 +317,67 @@ body {
   border-left: 5px solid #111;
 }
 
+/* ========================= MODEL SELECTORS ========================= */
+.upload-main-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+}
+
+.model-selectors {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-self: start;
+}
+
+.model-selectors label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 11px;
+  color: #888;
+  text-align: left;
+  font-family: "Patrick Hand", cursive;
+}
+
+.model-selectors select {
+  background: #fff;
+  color: #555;
+  border: 2px solid #bbb;
+  border-radius: 8px;
+  padding: 4px 24px 4px 8px;
+  font-size: 12px;
+  font-family: "Patrick Hand", cursive;
+  cursor: pointer;
+  appearance: none;
+  box-shadow: 2px 2px 0px #bbb;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 7px center;
+  transition: 0.2s ease;
+}
+
+.model-selectors select:hover {
+  border-color: #999;
+  color: #333;
+  background-color: #fafafa;
+}
+
+.model-selectors select:focus {
+  outline: none;
+  border-color: #aaa;
+}
+
+@media (max-width: 480px) {
+  .upload-main-row {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .model-selectors {
+    justify-self: center;  /* ← 加這個 */
+  }
+}

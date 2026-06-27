@@ -5,10 +5,15 @@ import { uploadImage } from "../services/api";
 function UploadPanel() {
     const [originImage, setOriginImage] = useState(null);
     const [similarImage, setSimilarImage] = useState(null);
+    const [detectorImage, setDetectorImage] = useState(null);
+    const [originImageTransform, setOriginImageTransform] = useState(null);
+    const [similarImageTransform, setSimilarImageTransform] = useState(null);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
     const [done, setDone] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [detectModel, setDetectModel] = useState("yolo");
+    const [transformModel, setTransformModel] = useState("sd_image_variations_transform");
 
     const handleUpload = async (e) => {
         const file = e.target.files[0];
@@ -22,10 +27,13 @@ function UploadPanel() {
         setOriginImage(previewUrl);
 
         try {
-            const firstResponse = await uploadImage(file);
+            const firstResponse = await uploadImage(file, detectModel, transformModel);
             if (firstResponse.success) {
                 setSuccess(true);
                 setSimilarImage(firstResponse.similar_image);
+                setDetectorImage(firstResponse.detector_image);
+                setOriginImageTransform(firstResponse.origin_image_transform);
+                setSimilarImageTransform(firstResponse.similar_image_transform);
             } else {
                 setMessage(firstResponse.error || "系統異常");
             }
@@ -41,6 +49,9 @@ function UploadPanel() {
     const handleReset = () => {
         setOriginImage(null);
         setSimilarImage(null);
+        setDetectorImage(null);
+        setOriginImageTransform(null);
+        setSimilarImageTransform(null);
         setMessage("");
         setDone(false);
         setSuccess(false);
@@ -50,17 +61,36 @@ function UploadPanel() {
         <section className="upload-section">
             <div className="upload-box">
                 {!done && !loading && (
-                    <label className="upload-label">
-                        上傳貓貓圖片
-                        <input type="file" accept="image/*" onChange={handleUpload} hidden />
-                    </label>
+                    <div className="upload-main-row">
+                        <div />
+                        <label className="upload-label">
+                            上傳貓貓圖片
+                            <input type="file" accept="image/*" onChange={handleUpload} hidden />
+                        </label>
+                        <div className="model-selectors">
+                            <label>
+                                Detect model
+                                <select value={detectModel} onChange={e => setDetectModel(e.target.value)}>
+                                    <option value="yolo">yolo</option>
+                                    <option value="torch">torch</option>
+                                </select>
+                            </label>
+                            <label>
+                                Transform model
+                                <select value={transformModel} onChange={e => setTransformModel(e.target.value)}>
+                                    <option value="sd_image_variations_transform">sd_image_variations_transform</option>
+                                    <option value="stable_diffusion_transform">stable_diffusion_transform</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
                 )}
 
                 {loading && <p className="loading-text">Image Detector & Machine Learning Model 正在努力畫圖中...</p>}
                 {message && <p className="error-text">{message}</p>}
             </div>
 
-            {originImage && success && ( // ← 有圖就馬上顯示，不等 done
+            {originImage && ( // ← 有圖就馬上顯示，不等 done
                 <div className="result-row" style={{ marginBottom: "36px" }}>
                     <h2 className="result-row-title">Origin Image</h2>
                     <div className="preview-grid">
@@ -75,7 +105,7 @@ function UploadPanel() {
                     <div className="result-row">
                         <h2 className="result-row-title">Image Detector & Similar Search</h2>
                         <div className="preview-grid">
-                            <ImagePreview title="原始圖片貓貓辨識" image={originImage} />
+                            <ImagePreview title="原始圖片貓貓辨識" image={detectorImage} />
                             <ImagePreview title="向量搜尋相似圖片" image={similarImage} />
                         </div>
                     </div>
@@ -83,8 +113,8 @@ function UploadPanel() {
                     <div className="result-row">
                         <h2 className="result-row-title">Style Transform</h2>
                         <div className="preview-grid">
-                            <ImagePreview title="原始圖片風格轉換" image={originImage} />
-                            <ImagePreview title="相似圖片風格轉換" image={similarImage} />
+                            <ImagePreview title="原始圖片風格轉換" image={originImageTransform} />
+                            <ImagePreview title="相似圖片風格轉換" image={similarImageTransform} />
                         </div>
                     </div>
 

@@ -2,12 +2,15 @@ import { useState } from "react";
 import ImagePreview from "./ImagePreview";
 import { uploadImage } from "../services/api";
 
-function UploadPanel() {
+function UploadPanel({onProcessCountUpdate}) {
     const [originImage, setOriginImage] = useState(null);
     const [similarImage, setSimilarImage] = useState(null);
     const [detectorImage, setDetectorImage] = useState(null);
     const [originImageTransform, setOriginImageTransform] = useState(null);
     const [similarImageTransform, setSimilarImageTransform] = useState(null);
+    const [predictList, setPredictList] = useState(null);
+    const [tagResults, setTagResults] = useState(null);
+    const [costs, setCosts] = useState(null);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
     const [done, setDone] = useState(false);
@@ -34,6 +37,16 @@ function UploadPanel() {
                 setDetectorImage(firstResponse.detector_image);
                 setOriginImageTransform(firstResponse.origin_image_transform);
                 setSimilarImageTransform(firstResponse.similar_image_transform);
+                setPredictList(firstResponse.predict_list);
+                setTagResults(firstResponse.tag_results);
+                setCosts({
+                    detector: firstResponse.detector_image_cost,
+                    similar: firstResponse.similar_image_cost,
+                    originTransform: firstResponse.origin_image_transform_cost,
+                    similarTransform: firstResponse.similar_image_transform_cost,
+                    api: firstResponse.api_cost,
+                });
+                onProcessCountUpdate?.(firstResponse.image_process_count);
             } else {
                 setMessage(firstResponse.error || "系統異常");
             }
@@ -52,6 +65,9 @@ function UploadPanel() {
         setDetectorImage(null);
         setOriginImageTransform(null);
         setSimilarImageTransform(null);
+        setPredictList(null);
+        setTagResults(null);
+        setCosts(null);
         setMessage("");
         setDone(false);
         setSuccess(false);
@@ -104,19 +120,54 @@ function UploadPanel() {
 
                     <div className="result-row">
                         <h2 className="result-row-title">Image Detector & Similar Search</h2>
+
                         <div className="preview-grid">
-                            <ImagePreview title="原始圖片貓貓辨識" image={detectorImage} />
-                            <ImagePreview title="向量搜尋相似圖片" image={similarImage} />
+                            <ImagePreview title="原始圖片貓貓辨識" image={detectorImage}  cost={costs?.detector}>
+                            {tagResults && (
+                                    <div className="predict-block">
+                                        <h3 className="predict-block-title">辨識結果</h3>
+                                        <ul className="predict-list">
+                                            {Object.entries(tagResults).map(([label, score]) => (
+                                                <li key={label}>
+                                                    {label}：{(score * 100).toFixed(2)}%
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                                {predictList && (
+                                    <div className="predict-block">
+                                        <h3 className="predict-block-title">全部預測類別</h3>
+                                        <ul className="predict-list">
+                                            {Object.entries(predictList).map(([label, score]) => (
+                                                <li key={label}>
+                                                    {label}：{(score * 100).toFixed(2)}%
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                            </ImagePreview>
+
+                            <ImagePreview title="向量搜尋相似圖片" image={similarImage} cost={costs?.similar} />
+
                         </div>
                     </div>
 
                     <div className="result-row">
                         <h2 className="result-row-title">Style Transform</h2>
                         <div className="preview-grid">
-                            <ImagePreview title="原始圖片風格轉換" image={originImageTransform} />
-                            <ImagePreview title="相似圖片風格轉換" image={similarImageTransform} />
+
+                            <ImagePreview title="原始圖片風格轉換" image={originImageTransform} cost={costs?.originTransform} />
+
+                            <ImagePreview title="相似圖片風格轉換" image={similarImageTransform} cost={costs?.similarTransform} />
+
                         </div>
                     </div>
+
+                    {costs?.api != null && (
+                        <p>{` ｜ 本次總耗時：${costs.api}s`}</p>
+                    )}
 
                 </div>
             )}

@@ -1,4 +1,5 @@
-function ImagePreview({ title, image }) {
+
+function ImagePreview({ title, image, cost, children }) {
     if (!image) return null;
 
     return (
@@ -10,6 +11,11 @@ function ImagePreview({ title, image }) {
                 alt={title}
                 className="preview-image"
             />
+
+            {children}
+
+            {cost != null && <p className="preview-cost">耗時：{cost}s</p>}
+
         </div>
     );
 }

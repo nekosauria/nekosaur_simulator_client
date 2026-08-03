@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { getCount } from "../services/api";
 
-function Footer() {
+function Footer({count}) {
     useEffect(() => {
         getCount()
             .then(data => {
@@ -12,6 +12,14 @@ function Footer() {
             })
             .catch(() => {});
     }, []);
+
+    useEffect(() => {
+        if (count == null) return;
+        document.documentElement.style.setProperty(
+            '--server-count',
+            `" 🐾  API 呼叫  ${count}  次"`
+        );
+    }, [count]);
 
     return (
         <footer className="footer">

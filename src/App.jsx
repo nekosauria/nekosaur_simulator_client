@@ -1,17 +1,21 @@
+import { useState } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import UploadPanel from "./components/UploadPanel";
 
+
 function App() {
-  return (
+    const [processCount, setProcessCount] = useState(null);
+
+    return (
       <div className="app-container">
         <Header />
 
-        <main className="main-content">
-          <UploadPanel />
-        </main>
+          <main className="main-content">
+              <UploadPanel onProcessCountUpdate={setProcessCount} />
+          </main>
 
-        <Footer />
+          <Footer count={processCount} />
       </div>
   );
 }

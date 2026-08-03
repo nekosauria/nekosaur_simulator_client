@@ -90,6 +90,24 @@ body {
   margin-bottom: 30px;
 }
 
+/* ---------- Upload main row (desktop) ---------- */
+.upload-main-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  min-height: 72px; /* keeps layout stable */
+  gap: 16px;
+}
+
+/* Center the upload button perfectly */
+.upload-main-row > .upload-label {
+  left: 50%;
+  margin: 0;
+  z-index: 2;
+}
+
 .upload-label {
   display: inline-block;
   padding: 16px 28px;
@@ -99,7 +117,6 @@ body {
   font-size: 1.1rem;
   font-weight: bold;
   border-radius: 14px;
-  transform: rotate(-1deg);
   box-shadow:
           6px 6px 0px #111,
           10px 10px 0px rgba(0,0,0,0.08);
@@ -107,10 +124,61 @@ body {
 }
 
 .upload-label:hover {
-  transform: rotate(1deg) scale(1.03);
   background: #ffd43b;
 }
 
+/* Right side group (style-ref + model selectors) */
+.style-ref-slot {
+  display: flex;
+  align-items: center;
+}
+
+.model-selectors {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.model-selectors label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 11px;
+  color: #888;
+  text-align: left;
+  font-family: "Patrick Hand", cursive;
+}
+
+.model-selectors select {
+  background: #fff;
+  color: #555;
+  border: 2px solid #bbb;
+  border-radius: 8px;
+  padding: 4px 24px 4px 8px;
+  font-size: 12px;
+  font-family: "Patrick Hand", cursive;
+  cursor: pointer;
+  appearance: none;
+  box-shadow: 2px 2px 0px #bbb;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 7px center;
+  transition: 0.2s ease;
+}
+
+.model-selectors select:hover {
+  border-color: #999;
+  color: #333;
+  background-color: #fafafa;
+}
+
+.model-selectors select:focus {
+  outline: none;
+  border-color: #aaa;
+}
+
+/* ---------- Loading / Error ---------- */
 .loading-text {
   margin-top: 16px;
   font-size: 1rem;
@@ -225,7 +293,7 @@ body {
 }
 
 .footer::after {
-  content: var(--server-count, "🐱 API 統計中"); /* ← 改這裡，fallback 是原本的文字 */
+  content: var(--server-count, "🐱 API 統計中");
   position: absolute;
   right: 10px;
   top: 50%;
@@ -252,50 +320,6 @@ body {
   animation: floaty 4s ease-in-out infinite;
 }
 
-/* ========================= RWD ========================= */
-@media (max-width: 768px) {
-  .logo { font-size: 1.6rem; }
-  .header-description { font-size: 0.85rem; }
-  .upload-label { width: 100%; max-width: 280px; }
-  .preview-grid { grid-template-columns: 1fr; }
-  .preview-card { transform: none !important; }
-
-  .reset-button-wrap {
-    margin-top: 24px;
-    margin-bottom: 32px;
-    padding: 0 16px;
-  }
-
-  .reset-button {
-    width: 100%;
-    max-width: 280px;
-    transform: none;
-  }
-
-  .reset-button:hover {
-    transform: none;
-  }
-
-  .footer {
-    padding: 16px 10px 32px;
-  }
-
-  .footer::before{
-    display: none;
-  }
-
-  /* ← 新增 */
-  .main-content {
-    flex: 1;
-    overflow-x: hidden;
-    overflow-y: visible;
-  }
-  .preview-card {
-    transform: none !important;
-    box-shadow: 4px 4px 0px #111; /* 手機版縮小陰影，避免溢出 */
-  }
-}
-
 /* ========================= RESULT SECTION ========================= */
 .result-section {
   display: flex;
@@ -317,67 +341,335 @@ body {
   border-left: 5px solid #111;
 }
 
-/* ========================= MODEL SELECTORS ========================= */
-.upload-main-row {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 16px;
+/* ========================= PREDICT RESULTS ========================= */
+.predict-block {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 2px dashed #ccc;
+  text-align: left;
 }
 
-.model-selectors {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-self: start;
+.predict-block-title {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  font-family: "Permanent Marker", cursive;
+  opacity: 0.85;
 }
 
-.model-selectors label {
+.predict-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  font-size: 11px;
-  color: #888;
-  text-align: left;
-  font-family: "Patrick Hand", cursive;
+  gap: 4px;
 }
 
-.model-selectors select {
-  background: #fff;
-  color: #555;
-  border: 2px solid #bbb;
+.predict-list li {
+  font-size: 0.9rem;
+  padding: 4px 10px;
+  background: #fff8dc;
+  border: 2px solid #111;
   border-radius: 8px;
-  padding: 4px 24px 4px 8px;
-  font-size: 12px;
+  width: fit-content;
+}
+
+/* ========================= COST TEXT ========================= */
+.preview-cost {
+  margin: 8px 0 16px; /* 原本是 -6px 0 12px，負邊距容易導致與上方元素重疊 */
+  font-size: 0.85rem;
+  line-height: 1.5;   /* 增加行高，提升閱讀體驗與間距感 */
+  color: #666;       /* 顏色稍微加深，提高對比度 */
+  opacity: 0.9;
+  text-align: center; /* 確保在卡片或容器內自然置中 */
+  word-break: break-word; /* 避免極端長字串爆版 */
+}
+
+.process-count-text {
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-top: 10px;  /* 稍微加寬上方間距 */
+}
+
+/* ========================= STYLE REF PICKER ========================= */
+.style-ref-picker {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.style-ref-open-button {
+  padding: 10px 22px;
+  background: #fff;
+  border: 3px solid #111;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-family: "Patrick Hand", cursive;
+  font-weight: bold;
+  box-shadow: 4px 4px 0px #111;
+  transition: 0.2s ease;
+  white-space: nowrap;
+}
+
+.style-ref-open-button:hover {
+  transform: translateY(-2px);
+  background: #ffe8d6;
+}
+
+.style-ref-selected-preview {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.style-ref-selected-preview img {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border: 3px solid #111;
+  border-radius: 10px;
+}
+
+.style-ref-clear-button {
+  background: none;
+  border: 2px dashed #d62828;
+  color: #d62828;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
   font-family: "Patrick Hand", cursive;
   cursor: pointer;
-  appearance: none;
-  box-shadow: 2px 2px 0px #bbb;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23aaa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 7px center;
+}
+
+.style-ref-clear-button:hover {
+  background: #ffe5e5;
+}
+
+.style-ref-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 12px;
+}
+
+.style-ref-thumb {
+  padding: 0;
+  border: 3px solid #111;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #fff;
+  line-height: 0;
   transition: 0.2s ease;
 }
 
-.model-selectors select:hover {
-  border-color: #999;
-  color: #333;
-  background-color: #fafafa;
+.style-ref-thumb img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
 }
 
-.model-selectors select:focus {
-  outline: none;
-  border-color: #aaa;
+.style-ref-thumb:hover {
+  transform: scale(1.03);
 }
 
+.style-ref-thumb.selected {
+  border-color: #ff0080;
+  box-shadow: 0 0 0 3px rgba(255, 0, 128, 0.25);
+}
+
+
+/* ========================= STYLE REF MODAL ========================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.modal-box {
+  background: #f7f1e8;
+  border: 4px solid #111;
+  border-radius: 16px;
+  box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.2);
+  padding: 24px;
+  max-width: 560px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.modal-title {
+  margin: 0 0 16px;
+  font-family: "Permanent Marker", cursive;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 12px;
+}
+
+.modal-preview {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.modal-preview-title {
+  margin: 0 0 8px;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.modal-preview-image {
+  max-width: 200px;
+  width: 100%;
+  border: 3px solid #111;
+  border-radius: 12px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.modal-cancel,
+.modal-confirm {
+  padding: 10px 22px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-family: "Patrick Hand", cursive;
+  font-weight: bold;
+  cursor: pointer;
+  border: 3px solid #111;
+  box-shadow: 4px 4px 0px #111;
+  transition: 0.2s ease;
+}
+
+.modal-cancel {
+  background: #fff;
+}
+
+.modal-cancel:hover {
+  background: #ffe5e5;
+}
+
+.modal-confirm {
+  background: #ffdf5d;
+}
+
+.modal-confirm:hover {
+  background: #ffd43b;
+  transform: translateY(-2px);
+}
+
+/* ========================= RWD ========================= */
+@media (max-width: 768px) {
+  .logo { font-size: 1.6rem; }
+  .header-description { font-size: 0.85rem; }
+
+  .upload-label {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .preview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .preview-card {
+    transform: none !important;
+    box-shadow: 4px 4px 0px #111;
+  }
+
+  .reset-button-wrap {
+    margin-top: 24px;
+    margin-bottom: 32px;
+    padding: 0 16px;
+  }
+
+  .reset-button {
+    width: 100%;
+    max-width: 280px;
+    transform: none;
+  }
+
+  .reset-button:hover {
+    transform: none;
+  }
+
+  .footer {
+    padding: 16px 10px 32px;
+  }
+
+  .footer::before {
+    display: none;
+  }
+
+  .main-content {
+    overflow-x: hidden;
+  }
+
+  .style-ref-grid,
+  .modal-grid {
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  }
+
+  .modal-box {
+    padding: 18px;
+    max-height: 90vh;
+  }
+}
+
+/* Mobile – stack everything nicely */
 @media (max-width: 480px) {
   .upload-main-row {
-    grid-template-columns: 1fr;
-    justify-items: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    min-height: auto;
+  }
+
+  .upload-main-row > .upload-label {
+    position: static;
+    transform: rotate(-1deg);
+  }
+
+  .upload-label:hover {
+    transform: rotate(1deg) scale(1.03);
+  }
+
+  .style-ref-slot,
+  .model-selectors {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .style-ref-picker {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .style-ref-open-button {
+    width: 100%;
+    max-width: 280px;
   }
 
   .model-selectors {
-    justify-self: center;  /* ← 加這個 */
+    justify-content: center;
   }
 }
+

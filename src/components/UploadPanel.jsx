@@ -1,8 +1,9 @@
 import { useState } from "react";
 import ImagePreview from "./ImagePreview";
-import { uploadImage } from "../services/api";
+import StyleRefModal from "./StyleRefModal";
+import { uploadImage, API_BASE_URL } from "../services/api";
 
-function UploadPanel({onProcessCountUpdate}) {
+function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
     const [originImage, setOriginImage] = useState(null);
     const [similarImage, setSimilarImage] = useState(null);
     const [detectorImage, setDetectorImage] = useState(null);
@@ -11,6 +12,8 @@ function UploadPanel({onProcessCountUpdate}) {
     const [predictList, setPredictList] = useState(null);
     const [tagResults, setTagResults] = useState(null);
     const [costs, setCosts] = useState(null);
+    const [selectedStyleRef, setSelectedStyleRef] = useState(null);
+    const [showStyleModal, setShowStyleModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
     const [done, setDone] = useState(false);
@@ -30,7 +33,7 @@ function UploadPanel({onProcessCountUpdate}) {
         setOriginImage(previewUrl);
 
         try {
-            const firstResponse = await uploadImage(file, detectModel, transformModel);
+            const firstResponse = await uploadImage(file, detectModel, transformModel, selectedStyleRef);
             if (firstResponse.success) {
                 setSuccess(true);
                 setSimilarImage(firstResponse.similar_image);
@@ -68,6 +71,8 @@ function UploadPanel({onProcessCountUpdate}) {
         setPredictList(null);
         setTagResults(null);
         setCosts(null);
+        setSelectedStyleRef(null);
+        setShowStyleModal(false);
         setMessage("");
         setDone(false);
         setSuccess(false);
@@ -78,11 +83,35 @@ function UploadPanel({onProcessCountUpdate}) {
             <div className="upload-box">
                 {!done && !loading && (
                     <div className="upload-main-row">
-                        <div />
+
                         <label className="upload-label">
                             上傳貓貓圖片
                             <input type="file" accept="image/*" onChange={handleUpload} hidden />
                         </label>
+                        <div className="style-ref-slot">
+                            <div className="style-ref-picker">
+                                <button
+                                    type="button"
+                                    className="style-ref-open-button"
+                                    onClick={() => setShowStyleModal(true)}
+                                >
+                                    {selectedStyleRef ? "change dinosaur ?" : "chose your dinosaur（ optional ）"}
+                                </button>
+
+                                {selectedStyleRef && (
+                                    <div className="style-ref-selected-preview">
+                                        <img src={`${API_BASE_URL}/${selectedStyleRef}`} alt={selectedStyleRef} />
+                                        <button
+                                            type="button"
+                                            className="style-ref-clear-button"
+                                            onClick={() => setSelectedStyleRef(null)}
+                                        >
+                                            清除
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                         <div className="model-selectors">
                             <label>
                                 Detect model
@@ -100,6 +129,18 @@ function UploadPanel({onProcessCountUpdate}) {
                             </label>
                         </div>
                     </div>
+                )}
+
+                {showStyleModal && (
+                    <StyleRefModal
+                        paths={styleRefImagePaths}
+                        initialSelected={selectedStyleRef}
+                        onClose={() => setShowStyleModal(false)}
+                        onConfirm={(path) => {
+                            setSelectedStyleRef(path);
+                            setShowStyleModal(false);
+                        }}
+                    />
                 )}
 
                 {loading && <p className="loading-text">Image Detector & Machine Learning Model 正在努力畫圖中...</p>}
@@ -123,7 +164,7 @@ function UploadPanel({onProcessCountUpdate}) {
 
                         <div className="preview-grid">
                             <ImagePreview title="原始圖片貓貓辨識" image={detectorImage}  cost={costs?.detector}>
-                            {tagResults && (
+                                {tagResults && (
                                     <div className="predict-block">
                                         <h3 className="predict-block-title">辨識結果</h3>
                                         <ul className="predict-list">

@@ -71,7 +71,6 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
         setPredictList(null);
         setTagResults(null);
         setCosts(null);
-        setSelectedStyleRef(null);
         setShowStyleModal(false);
         setMessage("");
         setDone(false);

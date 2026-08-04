@@ -19,7 +19,7 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
     const [done, setDone] = useState(false);
     const [success, setSuccess] = useState(false);
     const [detectModel, setDetectModel] = useState("yolo");
-    const [transformModel, setTransformModel] = useState("sd_image_variations_transform");
+    const [transformModel, setTransformModel] = useState("stable_diffusion_transform");
 
     const handleUpload = async (e) => {
         const file = e.target.files[0];
@@ -122,8 +122,8 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
                             <label>
                                 Transform model
                                 <select value={transformModel} onChange={e => setTransformModel(e.target.value)}>
-                                    <option value="sd_image_variations_transform">sd_image_variations_transform</option>
                                     <option value="stable_diffusion_transform">stable_diffusion_transform</option>
+                                    <option value="sd_image_variations_transform">sd_image_variations_transform</option>
                                 </select>
                             </label>
                         </div>

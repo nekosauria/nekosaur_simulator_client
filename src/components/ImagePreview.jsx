@@ -1,5 +1,4 @@
-
-function ImagePreview({ title, image, cost, children }) {
+function ImagePreview({ title, image, children }) {
     if (!image) return null;
 
     return (
@@ -12,9 +11,8 @@ function ImagePreview({ title, image, cost, children }) {
                 className="preview-image"
             />
 
+            {/*自定義內容*/}
             {children}
-
-            {cost != null && <p className="preview-cost">耗時：{cost}s</p>}
 
         </div>
     );

@@ -2,21 +2,41 @@
 ## 目錄結構
 
 ```
-nekosaur_simulator_client/
-├── ...(忽略)
+tree -I "node_modules"
+
+nekosaur_simulator_client/__
+.
+├── LICENSE.md
+├── README.md
+├── build.md
+├── docs
+│   └── tree.md
+├── eslint.config.js
+├── index.html
+├── package-lock.json
+├── package.json
+├── public
 ├── src
 │   ├── App.jsx
 │   ├── components
+│   │   ├── CrossOriginDownloadButton.jsx
 │   │   ├── Footer.jsx
 │   │   ├── Header.jsx
 │   │   ├── ImagePreview.jsx
+│   │   ├── ImagePreviewRow
+│   │   │   ├── DetectorResultRow.jsx
+│   │   │   └── TransformResultRow.jsx
+│   │   ├── Stylerefmodal.jsx
 │   │   └── UploadPanel.jsx
-│   ├── index.css
 │   ├── main.jsx
+│   ├── mock
+│   │   ├── countMock.js
+│   │   └── uploadMock.js
 │   ├── services
-│   │   └── api.js
+│   │   ├── api.js
+│   │   └── config.js
 │   └── styles.css
-
+└── vite.config.js
 ```
 
 ---

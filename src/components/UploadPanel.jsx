@@ -1,57 +1,38 @@
 import { useState } from "react";
 import ImagePreview from "./ImagePreview";
 import StyleRefModal from "./StyleRefModal";
+import DetectorResultRow from "./ImagePreviewRow/DetectorResultRow";
+import TransformResultRow from "./ImagePreviewRow/TransformResultRow";
 import { uploadImage, API_BASE_URL } from "../services/api";
 
 function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
     const [originImage, setOriginImage] = useState(null);
-    const [similarImage, setSimilarImage] = useState(null);
-    const [detectorImage, setDetectorImage] = useState(null);
-    const [originImageTransform, setOriginImageTransform] = useState(null);
-    const [similarImageTransform, setSimilarImageTransform] = useState(null);
-    const [predictList, setPredictList] = useState(null);
-    const [tagResults, setTagResults] = useState(null);
-    const [costs, setCosts] = useState(null);
+    const [resultData, setResultData] = useState(null);
     const [selectedStyleRef, setSelectedStyleRef] = useState(null);
     const [showStyleModal, setShowStyleModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
     const [done, setDone] = useState(false);
-    const [success, setSuccess] = useState(false);
     const [detectModel, setDetectModel] = useState("yolo");
     const [transformModel, setTransformModel] = useState("stable_diffusion_transform");
 
     const handleUpload = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
+
         setLoading(true);
         setMessage("");
-        setSimilarImage(null);
+        setResultData(null);
         setDone(false);
-        setSuccess(false);
-        const previewUrl = URL.createObjectURL(file);
-        setOriginImage(previewUrl);
+        setOriginImage(URL.createObjectURL(file));
 
         try {
-            const firstResponse = await uploadImage(file, detectModel, transformModel, selectedStyleRef);
-            if (firstResponse.success) {
-                setSuccess(true);
-                setSimilarImage(firstResponse.similar_image);
-                setDetectorImage(firstResponse.detector_image);
-                setOriginImageTransform(firstResponse.origin_image_transform);
-                setSimilarImageTransform(firstResponse.similar_image_transform);
-                setPredictList(firstResponse.predict_list);
-                setTagResults(firstResponse.tag_results);
-                setCosts({
-                    detector: firstResponse.detector_image_cost,
-                    similar: firstResponse.similar_image_cost,
-                    originTransform: firstResponse.origin_image_transform_cost,
-                    similarTransform: firstResponse.similar_image_transform_cost,
-                    api: firstResponse.api_cost,
-                });
-                onProcessCountUpdate?.(firstResponse.image_process_count);
+            const response = await uploadImage(file, detectModel, transformModel, selectedStyleRef);
+            if (response.success) {
+                setResultData(response);
+                onProcessCountUpdate?.(response.metrics?.image_process_count);
             } else {
-                setMessage(firstResponse.error || "系統異常");
+                setMessage(response.error || "系統異常");
             }
         } catch (err) {
             console.error(err);
@@ -64,17 +45,10 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
 
     const handleReset = () => {
         setOriginImage(null);
-        setSimilarImage(null);
-        setDetectorImage(null);
-        setOriginImageTransform(null);
-        setSimilarImageTransform(null);
-        setPredictList(null);
-        setTagResults(null);
-        setCosts(null);
+        setResultData(null);
         setShowStyleModal(false);
         setMessage("");
         setDone(false);
-        setSuccess(false);
     };
 
     return (
@@ -82,7 +56,6 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
             <div className="upload-box">
                 {!done && !loading && (
                     <div className="upload-main-row">
-
                         <label className="upload-label">
                             上傳貓貓圖片
                             <input type="file" accept="image/*" onChange={handleUpload} hidden />
@@ -94,7 +67,7 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
                                     className="style-ref-open-button"
                                     onClick={() => setShowStyleModal(true)}
                                 >
-                                    {selectedStyleRef ? "change dinosaur ?" : "chose your dinosaur（ optional ）"}
+                                    {selectedStyleRef ? "change dinosaur ?" : "choose your dinosaur（ optional ）"}
                                 </button>
 
                                 {selectedStyleRef && (
@@ -146,7 +119,8 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
                 {message && <p className="error-text">{message}</p>}
             </div>
 
-            {originImage && ( // ← 有圖就馬上顯示，不等 done
+            {/* 原始圖片 */}
+            {originImage && (
                 <div className="result-row" style={{ marginBottom: "36px" }}>
                     <h2 className="result-row-title">Origin Image</h2>
                     <div className="preview-grid">
@@ -155,65 +129,36 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
                 </div>
             )}
 
-            {done && success && (
+            <br/>
+            {/* 結果呈現區域 */}
+            {done && resultData && (
                 <div className="result-section">
-
                     <div className="result-row">
                         <h2 className="result-row-title">Image Detector & Similar Search</h2>
-
                         <div className="preview-grid">
-                            <ImagePreview title="原始圖片貓貓辨識" image={detectorImage}  cost={costs?.detector}>
-                                {tagResults && (
-                                    <div className="predict-block">
-                                        <h3 className="predict-block-title">辨識結果</h3>
-                                        <ul className="predict-list">
-                                            {Object.entries(tagResults).map(([label, score]) => (
-                                                <li key={label}>
-                                                    {label}：{(score * 100).toFixed(2)}%
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
-                                {predictList && (
-                                    <div className="predict-block">
-                                        <h3 className="predict-block-title">全部預測類別</h3>
-                                        <ul className="predict-list">
-                                            {Object.entries(predictList).map(([label, score]) => (
-                                                <li key={label}>
-                                                    {label}：{(score * 100).toFixed(2)}%
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
-                            </ImagePreview>
-
-                            <ImagePreview title="向量搜尋相似圖片" image={similarImage} cost={costs?.similar} />
-
+                            <DetectorResultRow detector={resultData.detector.origin} />
+                            <DetectorResultRow detector={resultData.detector.similar} />
                         </div>
                     </div>
 
                     <div className="result-row">
                         <h2 className="result-row-title">Style Transform</h2>
                         <div className="preview-grid">
-
-                            <ImagePreview title="原始圖片風格轉換" image={originImageTransform} cost={costs?.originTransform} />
-
-                            <ImagePreview title="相似圖片風格轉換" image={similarImageTransform} cost={costs?.similarTransform} />
-
+                            <TransformResultRow transform={resultData.transform.origin} />
+                            <TransformResultRow transform={resultData.transform.similar} />
                         </div>
                     </div>
 
-                    {costs?.api != null && (
-                        <p>{` ｜ 本次總耗時：${costs.api}s`}</p>
+                    {resultData.metrics?.api_cost != null && (
+                        <p className="total-cost">
+                            {`｜ 本次總耗時：${typeof resultData.metrics.api_cost === "number" ? resultData.metrics.api_cost.toFixed(3) : resultData.metrics.api_cost}s`}
+                        </p>
                     )}
-
                 </div>
             )}
 
             {done && (
-                <div className="reset-button-wrap"> {/* ← 新增 wrap 做置中 */}
+                <div className="reset-button-wrap">
                     <button className="reset-button" onClick={handleReset}>
                         ← 回首頁
                     </button>

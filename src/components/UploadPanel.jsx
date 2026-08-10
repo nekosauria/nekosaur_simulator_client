@@ -13,8 +13,8 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
     const [done, setDone] = useState(false);
-    const [detectModel, setDetectModel] = useState("yolo");
-    const [transformModel, setTransformModel] = useState("stable_diffusion_transform");
+    const [detectModel, setDetectModel] = useState("yolo11n");
+    const [transformModel, setTransformModel] = useState("stable-diffusion-v1-5");
 
     const handleUpload = async (e) => {
         const file = e.target.files[0];
@@ -88,15 +88,15 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
                             <label>
                                 Detect model
                                 <select value={detectModel} onChange={e => setDetectModel(e.target.value)}>
-                                    <option value="yolo">yolo</option>
-                                    <option value="torch">torch</option>
+                                    <option value="yolo11n">yolo</option>
+                                    <option value="maskrcnn_model">torch</option>
                                 </select>
                             </label>
                             <label>
                                 Transform model
                                 <select value={transformModel} onChange={e => setTransformModel(e.target.value)}>
-                                    <option value="stable_diffusion_transform">stable_diffusion_transform</option>
-                                    <option value="sd_image_variations_transform">sd_image_variations_transform</option>
+                                    <option value="stable-diffusion-v1-5">stable_diffusion_transform</option>
+                                    <option value="sd-image-variations-diffusers">sd_image_variations_transform</option>
                                 </select>
                             </label>
                         </div>

@@ -1,10 +1,11 @@
 // mock/uploadMock.js
 export const mockUploadData = {
+    "success": true,
     "detector": {
         "origin": {
             "image": "http://127.0.0.1:5001/static/images/user_upload/origin/5185d8159e1c29d205a103091a30b5a7_16_cat.jpeg",
-            "detect_image": "http://127.0.0.1:5001/static/images/user_upload/detect/torch/3f022999b6bbe2dd51275a3caa80e3b3_16_cat.jpg",
-            "detect_model": "torch",
+            "detect_image": "http://127.0.0.1:5001/static/images/user_upload/detect/maskrcnn_model/3f022999b6bbe2dd51275a3caa80e3b3_16_cat.jpg",
+            "detect_model": "maskrcnn_model",
             "has_neko": false,
             "is_cache": false,
             "score_list": {
@@ -18,13 +19,12 @@ export const mockUploadData = {
                 "cat": 0.992,
                 "teddy bear": 0.613
             },
-            "create_time": "2026-08-08 19:35:29",
-            "cost": 1.246
+            "create_time": "2026-08-08 19:35:29"
         },
         "similar": {
             "image": "http://127.0.0.1:5001/static/images/user_upload/origin/5185d8159e1c29d205a103091a30b5a7_16_cat.jpeg",
-            "detect_image": "http://127.0.0.1:5001/static/images/user_upload/detect/torch/3f022999b6bbe2dd51275a3caa80e3b3_16_cat.jpg",
-            "detect_model": "yolo",
+            "detect_image": "http://127.0.0.1:5001/static/images/user_upload/detect/maskrcnn_model/3f022999b6bbe2dd51275a3caa80e3b3_16_cat.jpg",
+            "detect_model": "yolo11n",
             "has_neko": true,
             "is_cache": true,
             "score_list": {
@@ -38,29 +38,31 @@ export const mockUploadData = {
                 "cat": 0.992,
                 "teddy bear": 0.613
             },
-            "create_time": "2026-08-08 19:35:29",
-            "cost": 4.44
+            "create_time": "2026-08-08 19:35:29"
         }
     },
     "transform": {
         "origin": {
-            "transform_image": "http://127.0.0.1:5001/static/images/user_upload/transform/cea4e5c93e4290dc38e394ca4ef43dce_16_cat.jpg",
-            "transform_model": "sd_image_variations_transform",
+            "transform_image": "http://127.0.0.1:5001/static/images/user_upload/transform/sd-image-variations-diffusers/cea4e5c93e4290dc38e394ca4ef43dce_16_cat.jpg",
+            "transform_model": "sd-image-variations-diffusers",
             "is_cache": false,
-            "create_time": "2026-08-08 19:35:51",
-            "cost": 22.132
+            "create_time": "2026-08-08 19:35:51"
         },
         "similar": {
-            "transform_image": "http://127.0.0.1:5001/static/images/user_upload/transform/cea4e5c93e4290dc38e394ca4ef43dce_16_cat.jpg",
-            "transform_model": "sd_image_variations_transform",
+            "transform_image": "http://127.0.0.1:5001/static/images/user_upload/transform/sd-image-variations-diffusers/cea4e5c93e4290dc38e394ca4ef43dce_16_cat.jpg",
+            "transform_model": "sd-image-variations-diffusers",
             "is_cache": true,
-            "create_time": "2026-08-08 19:35:51",
-            "cost": 11.123
+            "create_time": "2026-08-08 19:35:51"
         }
     },
-    "success": true,
     "metrics": {
         "image_process_count": 21,
+        "image_validate_cost": 0.015,
+        "image_embedding_cost": 0.088,
+        "origin_detector_cost": 1.246,
+        "similar_detector_cost": 4.44,
+        "origin_transform_cost": 22.132,
+        "similar_transform_cost": 11.123,
         "api_cost": 23.398
     }
 }

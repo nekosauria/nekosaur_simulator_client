@@ -2,7 +2,7 @@ import ImagePreview from "../ImagePreview";
 import CrossOriginDownloadButton from "../CrossOriginDownloadButton.jsx";
 import { formatDateTime } from "../../util/datetime";
 
-function DetectorResultRow({ detector }) {
+function DetectorResultRow({ detector, title = "貓貓辨識結果" }) {
     if (!detector) return null;
 
     const {
@@ -21,7 +21,7 @@ function DetectorResultRow({ detector }) {
     const validCosts = (costs || []).filter(c => c.value != null);
 
     return (
-        <ImagePreview title="貓貓辨識結果" image={detectImage}>
+        <ImagePreview title={title} image={detectImage}>
             <div className="preview-details">
 
                 {/* 徽章標籤區塊 */}

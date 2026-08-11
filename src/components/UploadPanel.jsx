@@ -157,6 +157,7 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
                         <h2 className="result-row-title">Image Detector & Similar Search</h2>
                         <div className="preview-grid">
                             <DetectorResultRow
+                                title="原圖偵測結果"
                                 detector={{
                                     ...resultData.detector.origin,
                                     costs: [
@@ -166,6 +167,7 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
                                 }}
                             />
                             <DetectorResultRow
+                                title="相似圖偵測結果"
                                 detector={{
                                     ...resultData.detector.similar,
                                     costs: [
@@ -181,6 +183,7 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
                         <h2 className="result-row-title">Style Transform</h2>
                         <div className="preview-grid">
                             <TransformResultRow
+                                title="原圖風格轉換"
                                 transform={{
                                     ...resultData.transform.origin,
                                     costs: [
@@ -189,6 +192,7 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
                                 }}
                             />
                             <TransformResultRow
+                                title="相似圖風格轉換"
                                 transform={{
                                     ...resultData.transform.similar,
                                     costs: [

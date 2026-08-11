@@ -2,7 +2,7 @@ import ImagePreview from "../ImagePreview";
 import CrossOriginDownloadButton from "../CrossOriginDownloadButton.jsx";
 import { formatDateTime } from "../../util/datetime";
 
-function TransformResultRow({ transform }) {
+function TransformResultRow({ transform, title = "風格轉換結果" }) {
     if (!transform) return null;
 
     const {
@@ -16,7 +16,7 @@ function TransformResultRow({ transform }) {
     const validCosts = (costs || []).filter(c => c.value != null);
 
     return (
-        <ImagePreview title="風格轉換結果" image={transformImage}>
+        <ImagePreview title={title} image={transformImage}>
             <div className="preview-details">
 
                 {/* 徽章標籤區塊 */}

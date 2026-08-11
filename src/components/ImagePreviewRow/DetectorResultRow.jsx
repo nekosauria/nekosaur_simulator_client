@@ -1,5 +1,6 @@
 import ImagePreview from "../ImagePreview";
 import CrossOriginDownloadButton from "../CrossOriginDownloadButton.jsx";
+import { formatDateTime } from "../../util/datetime";
 
 function DetectorResultRow({ detector }) {
     if (!detector) return null;
@@ -87,7 +88,7 @@ function DetectorResultRow({ detector }) {
                             ))}
                         </p>
                         <p className="preview-left">
-                            <span>{createTime && `圖片建立時間：${createTime}`}</span>
+                            <span>{createTime && `圖片建立時間：${formatDateTime(createTime)}`}</span>
                             {/* 原圖下載 */}
                             <CrossOriginDownloadButton url={detectImage} />
                         </p>

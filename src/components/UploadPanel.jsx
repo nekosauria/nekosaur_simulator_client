@@ -5,6 +5,7 @@ import DetectorResultRow from "./ImagePreviewRow/DetectorResultRow";
 import TransformResultRow from "./ImagePreviewRow/TransformResultRow";
 import CrossOriginDownloadButton from "./CrossOriginDownloadButton.jsx";
 import { uploadImage, API_BASE_URL } from "../services/api";
+import { formatDateTimeFromUTC } from "../util/datetime";
 
 function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
     const [originImage, setOriginImage] = useState(null);
@@ -29,7 +30,7 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
         setDone(false);
         setOriginImage(URL.createObjectURL(file));
         setOriginFilename(file.name);
-        setUploadTime(new Date().toLocaleString());
+        setUploadTime(new Date().toISOString());
 
         try {
             const response = await uploadImage(file, detectModel, transformModel, selectedStyleRef);
@@ -135,7 +136,7 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
                             <div className="preview-details">
                                 <div className="detail-block">
                                     <p className="preview-left">
-                                        {uploadTime && `圖片上傳時間：${uploadTime}`}
+                                        {uploadTime && `圖片上傳時間：${formatDateTimeFromUTC(uploadTime)}`}
                                     </p>
                                     <p className="preview-right">
                                         {/* 原始圖片下載 */}

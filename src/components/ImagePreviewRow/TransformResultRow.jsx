@@ -1,5 +1,6 @@
 import ImagePreview from "../ImagePreview";
 import CrossOriginDownloadButton from "../CrossOriginDownloadButton.jsx";
+import { formatDateTime } from "../../util/datetime";
 
 function TransformResultRow({ transform }) {
     if (!transform) return null;
@@ -40,7 +41,7 @@ function TransformResultRow({ transform }) {
                             ))}
                         </p>
                         <p className="preview-left">
-                            <span>{createTime && `圖片建立時間：${createTime}`}</span>
+                            <span>{createTime && `圖片建立時間：${formatDateTime(createTime)}`}</span>
                             {/* 原圖下載 */}
                             <CrossOriginDownloadButton url={transformImage} />
                         </p>

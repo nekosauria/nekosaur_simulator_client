@@ -3,6 +3,7 @@ import ImagePreview from "./ImagePreview";
 import StyleRefModal from "./StyleRefModal";
 import DetectorResultRow from "./ImagePreviewRow/DetectorResultRow";
 import TransformResultRow from "./ImagePreviewRow/TransformResultRow";
+import CrossOriginDownloadButton from "./CrossOriginDownloadButton.jsx";
 import { uploadImage, API_BASE_URL } from "../services/api";
 
 function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
@@ -15,6 +16,8 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
     const [done, setDone] = useState(false);
     const [detectModel, setDetectModel] = useState("yolo11n");
     const [transformModel, setTransformModel] = useState("stable-diffusion-v1-5");
+    const [originFilename, setOriginFilename] = useState(null);
+    const [uploadTime, setUploadTime] = useState(null);
 
     const handleUpload = async (e) => {
         const file = e.target.files[0];
@@ -25,6 +28,8 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
         setResultData(null);
         setDone(false);
         setOriginImage(URL.createObjectURL(file));
+        setOriginFilename(file.name);
+        setUploadTime(new Date().toLocaleString());
 
         try {
             const response = await uploadImage(file, detectModel, transformModel, selectedStyleRef);
@@ -45,6 +50,8 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
 
     const handleReset = () => {
         setOriginImage(null);
+        setOriginFilename(null);
+        setUploadTime(null);
         setResultData(null);
         setShowStyleModal(false);
         setMessage("");
@@ -124,7 +131,19 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
                 <div className="result-row" style={{ marginBottom: "36px" }}>
                     <h2 className="result-row-title">Origin Image</h2>
                     <div className="preview-grid">
-                        <ImagePreview title="原始圖片" image={originImage} />
+                        <ImagePreview title="原始圖片" image={originImage}>
+                            <div className="preview-details">
+                                <div className="detail-block">
+                                    <p className="preview-left">
+                                        {uploadTime && `圖片上傳時間：${uploadTime}`}
+                                    </p>
+                                    <p className="preview-right">
+                                        {/* 原始圖片下載 */}
+                                        <CrossOriginDownloadButton url={originImage} filename={originFilename} />
+                                    </p>
+                                </div>
+                            </div>
+                        </ImagePreview>
                     </div>
                 </div>
             )}
@@ -136,16 +155,46 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
                     <div className="result-row">
                         <h2 className="result-row-title">Image Detector & Similar Search</h2>
                         <div className="preview-grid">
-                            <DetectorResultRow detector={resultData.detector.origin} />
-                            <DetectorResultRow detector={resultData.detector.similar} />
+                            <DetectorResultRow
+                                detector={{
+                                    ...resultData.detector.origin,
+                                    costs: [
+                                        { label: "物件偵測耗時", value: resultData.metrics?.origin_detector_cost },
+                                        { label: "圖片驗證耗時", value: resultData.metrics?.image_validate_cost },
+                                    ],
+                                }}
+                            />
+                            <DetectorResultRow
+                                detector={{
+                                    ...resultData.detector.similar,
+                                    costs: [
+                                        { label: "物件偵測耗時", value: resultData.metrics?.similar_detector_cost },
+                                        { label: "向量搜尋耗時", value: resultData.metrics?.image_embedding_cost },
+                                    ],
+                                }}
+                            />
                         </div>
                     </div>
 
                     <div className="result-row">
                         <h2 className="result-row-title">Style Transform</h2>
                         <div className="preview-grid">
-                            <TransformResultRow transform={resultData.transform.origin} />
-                            <TransformResultRow transform={resultData.transform.similar} />
+                            <TransformResultRow
+                                transform={{
+                                    ...resultData.transform.origin,
+                                    costs: [
+                                        { label: "生成圖片耗時", value: resultData.metrics?.origin_transform_cost },
+                                    ],
+                                }}
+                            />
+                            <TransformResultRow
+                                transform={{
+                                    ...resultData.transform.similar,
+                                    costs: [
+                                        { label: "生成圖片耗時", value: resultData.metrics?.similar_transform_cost },
+                                    ],
+                                }}
+                            />
                         </div>
                     </div>
 
@@ -160,7 +209,7 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
             {done && (
                 <div className="reset-button-wrap">
                     <button className="reset-button" onClick={handleReset}>
-                        ← 回首頁
+                        回首頁
                     </button>
                 </div>
             )}

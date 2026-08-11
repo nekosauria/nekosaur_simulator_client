@@ -8,10 +8,11 @@ function TransformResultRow({ transform }) {
         transform_image: transformImage,
         is_cache: isCache,
         create_time: createTime,
-        cost: cost
+        costs,
     } = transform;
 
     const hasBadges = Boolean(isCache);
+    const validCosts = (costs || []).filter(c => c.value != null);
 
     return (
         <ImagePreview title="風格轉換結果" image={transformImage}>
@@ -27,13 +28,21 @@ function TransformResultRow({ transform }) {
                 )}
 
                 {/* 建立時間 + 耗時（耗時靠右） */}
-                {(createTime || cost != null) && (
+                {(createTime || validCosts.length > 0) && (
                     <div className="detail-block">
+                        <br/>
                         <p className="preview-cost">
-                            <span>{cost != null && `處理耗時：${typeof cost === "number" ? cost.toFixed(3) : cost}s`}</span>
+                            {validCosts.map(({ label, value }, i) => (
+                                <span key={label}>
+                                    {i > 0 && "｜ "}
+                                    {`${label}：${typeof value === "number" ? value.toFixed(3) : value}s`}
+                                </span>
+                            ))}
+                        </p>
+                        <p className="preview-left">
                             <span>{createTime && `圖片建立時間：${createTime}`}</span>
-                            {/* 轉換結果下載 */}
-                            <CrossOriginDownloadButton url={transformImage}  />
+                            {/* 原圖下載 */}
+                            <CrossOriginDownloadButton url={transformImage} />
                         </p>
                     </div>
                 )}

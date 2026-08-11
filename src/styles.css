@@ -215,6 +215,7 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 22px;
+  align-items: start;
 }
 
 .preview-card {
@@ -252,7 +253,6 @@ body {
 }
 
 .reset-button {
-  display: inline-block;
   padding: 14px 28px;
   background: #fff;
   border: 4px solid #111;
@@ -261,11 +261,25 @@ body {
   font-family: "Patrick Hand", cursive;
   font-weight: bold;
   border-radius: 14px;
-  transform: rotate(1deg);
   box-shadow:
           6px 6px 0px #111,
           10px 10px 0px rgba(0,0,0,0.08);
   transition: 0.2s ease;
+  width: 100%;
+  max-width: 280px;
+  transform: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.reset-button::after {
+  content: "🏠";
+  font-size: 0.85rem;
+  font-family: "Patrick Hand", cursive;
+  font-weight: bold;
+  font-style: normal;
 }
 
 .reset-button:hover {
@@ -474,9 +488,12 @@ body {
   transition: 0.15s ease;
 }
 
-.preview-download-button::before {
-  content: "⬇";
+.preview-download-button::after {
+  content: "📦";
   font-size: 0.85rem;
+  font-family: "Patrick Hand", cursive;
+  font-weight: bold;
+  font-style: normal;
 }
 
 .preview-download-button:hover {
@@ -495,7 +512,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 8px 16px;
   margin: 8px 0 16px;
   font-size: 0.85rem;
@@ -510,6 +527,34 @@ body {
   font-size: 0.9rem;
   opacity: 0.8;
   margin-top: 10px;  /* 稍微加寬上方間距 */
+}
+
+.preview-left {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin: 8px 0 16px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #666;
+  opacity: 0.9;
+  word-break: break-word;
+}
+
+.preview-right {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px 16px;
+  margin: 8px 0 16px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #666;
+  opacity: 0.9;
+  word-break: break-word;
 }
 
 /* ========================= STYLE REF PICKER ========================= */
@@ -723,12 +768,23 @@ body {
     width: 100%;
     max-width: 280px;
     transform: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .reset-button::after {
+    content: "🏠";
+    font-size: 0.85rem;
+    font-family: "Patrick Hand", cursive;
+    font-weight: bold;
+    font-style: normal;
   }
 
   .reset-button:hover {
     transform: none;
   }
-
   .footer {
     padding: 16px 10px 32px;
   }

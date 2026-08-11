@@ -4,7 +4,7 @@ export const mockUploadData = {
     "detector": {
         "origin": {
             "image": "http://127.0.0.1:5001/static/images/user_upload/origin/5185d8159e1c29d205a103091a30b5a7_16_cat.jpeg",
-            "detect_image": "http://127.0.0.1:5001/static/images/user_upload/detect/maskrcnn_model/3f022999b6bbe2dd51275a3caa80e3b3_16_cat.jpg",
+            "detect_image": "http://127.0.0.1:5001/static/images/user_upload/detect/maskrcnn_model/4c4ff92631ce9ebee2e30d5f65c7cb3a_glass_cat.jpg",
             "detect_model": "maskrcnn_model",
             "has_neko": false,
             "is_cache": false,
@@ -23,7 +23,7 @@ export const mockUploadData = {
         },
         "similar": {
             "image": "http://127.0.0.1:5001/static/images/user_upload/origin/5185d8159e1c29d205a103091a30b5a7_16_cat.jpeg",
-            "detect_image": "http://127.0.0.1:5001/static/images/user_upload/detect/maskrcnn_model/3f022999b6bbe2dd51275a3caa80e3b3_16_cat.jpg",
+            "detect_image": "http://127.0.0.1:5001/static/images/user_upload/detect/yolo11n/15cbb5b4df706608ed1af7ffdbe062ee_cat0.jpg",
             "detect_model": "yolo11n",
             "has_neko": true,
             "is_cache": true,
@@ -43,13 +43,13 @@ export const mockUploadData = {
     },
     "transform": {
         "origin": {
-            "transform_image": "http://127.0.0.1:5001/static/images/user_upload/transform/sd-image-variations-diffusers/cea4e5c93e4290dc38e394ca4ef43dce_16_cat.jpg",
+            "transform_image": "http://127.0.0.1:5001/static/images/user_upload/transform/stable-diffusion-v1-5/4b8155b00a14e0b57daa61e7b1a8afb1_cat0.jpg",
             "transform_model": "sd-image-variations-diffusers",
             "is_cache": false,
             "create_time": "2026-08-08 19:35:51"
         },
         "similar": {
-            "transform_image": "http://127.0.0.1:5001/static/images/user_upload/transform/sd-image-variations-diffusers/cea4e5c93e4290dc38e394ca4ef43dce_16_cat.jpg",
+            "transform_image": "http://127.0.0.1:5001/static/images/user_upload/transform/sd-image-variations-diffusers/0cc1d7287171f3ff2145fd0375997baa_16_cat.jpg",
             "transform_model": "sd-image-variations-diffusers",
             "is_cache": true,
             "create_time": "2026-08-08 19:35:51"

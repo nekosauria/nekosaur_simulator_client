@@ -5,19 +5,19 @@ function DetectorResultRow({ detector }) {
     if (!detector) return null;
 
     const {
-        image,
         detect_image: detectImage,
         has_neko: hasNeko,
         is_cache: isCache,
         score_list: scoreList,
         score_results: scoreResults,
         create_time: createTime,
-        cost: cost
+        costs,
     } = detector;
 
     const hasResults = scoreResults && Object.keys(scoreResults).length > 0;
     const hasList = scoreList && Object.keys(scoreList).length > 0;
     const hasBadges = Boolean(isCache || hasNeko !== undefined);
+    const validCosts = (costs || []).filter(c => c.value != null);
 
     return (
         <ImagePreview title="貓貓辨識結果" image={detectImage}>
@@ -75,13 +75,21 @@ function DetectorResultRow({ detector }) {
                 )}
 
                 {/* 建立時間 + 耗時（耗時靠右） */}
-                {(createTime || cost != null) && (
+                {(createTime || validCosts.length > 0) && (
                     <div className="detail-block">
+                        <br/>
                         <p className="preview-cost ">
-                            <span>{cost != null && `處理耗時：${typeof cost === "number" ? cost.toFixed(3) : cost}s`}</span>
+                            {validCosts.map(({ label, value }, i) => (
+                                <span key={label}>
+                                    {i > 0 && "｜ "}
+                                    {`${label}：${typeof value === "number" ? value.toFixed(3) : value}s`}
+                                </span>
+                            ))}
+                        </p>
+                        <p className="preview-left">
                             <span>{createTime && `圖片建立時間：${createTime}`}</span>
                             {/* 原圖下載 */}
-                            <CrossOriginDownloadButton url={image} />
+                            <CrossOriginDownloadButton url={detectImage} />
                         </p>
                     </div>
                 )}

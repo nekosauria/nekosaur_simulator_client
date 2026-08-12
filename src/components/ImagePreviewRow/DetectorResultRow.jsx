@@ -6,22 +6,22 @@ function DetectorResultRow({ detector, title = "貓貓辨識結果" }) {
     if (!detector) return null;
 
     const {
-        detect_image: detectImage,
-        has_neko: hasNeko,
-        is_cache: isCache,
-        score_list: scoreList,
-        score_results: scoreResults,
-        create_time: createTime,
+        detect_path: detectPath,
+        has_cat: hasCat,
+        is_preprocessed: isPreprocessed,
+        predict_list: predictList,
+        tag_results: tagResults,
+        created_at: createdAt,
         costs,
     } = detector;
 
-    const hasResults = scoreResults && Object.keys(scoreResults).length > 0;
-    const hasList = scoreList && Object.keys(scoreList).length > 0;
-    const hasBadges = Boolean(isCache || hasNeko !== undefined);
+    const hasResults = tagResults && Object.keys(tagResults).length > 0;
+    const hasList = predictList && Object.keys(predictList).length > 0;
+    const hasBadges = Boolean(isPreprocessed || hasCat !== undefined);
     const validCosts = (costs || []).filter(c => c.value != null);
 
     return (
-        <ImagePreview title={title} image={detectImage}>
+        <ImagePreview title={title} image={detectPath}>
             <div className="preview-details">
 
                 {/* 徽章標籤區塊 */}
@@ -29,13 +29,13 @@ function DetectorResultRow({ detector, title = "貓貓辨識結果" }) {
                     <div className="detail-block">
                         <h3 className="detail-block-title">狀態標籤</h3>
                         <div className="preview-badges">
-                            {hasNeko === true && (
-                                <span className="preview-badge preview-badge--success">偵測到貓咪</span>
-                            )}
-                            {hasNeko === false && (
-                                <span className="preview-badge preview-badge--muted">未偵測到貓咪</span>
-                            )}
-                            {isCache === true && (
+                            {/* 貓咪偵測狀態：二選一 */}
+                            <span className={`preview-badge ${hasCat ? 'preview-badge--success' : 'preview-badge--muted'}`}>
+                                {hasCat ? '偵測到貓咪' : '未偵測到貓咪'}
+                            </span>
+
+                            {/*快取狀態 */}
+                            {isPreprocessed && (
                                 <span className="preview-badge preview-badge--info">Cache Hit</span>
                             )}
                         </div>
@@ -49,7 +49,7 @@ function DetectorResultRow({ detector, title = "貓貓辨識結果" }) {
                             <>
                                 <h3 className="detail-block-title">圖片辨識結果</h3>
                                 <ul className="predict-list">
-                                    {Object.entries(scoreResults).map(([label, score]) => (
+                                    {Object.entries(tagResults).map(([label, score]) => (
                                         <li key={label}>
                                             <span>{label}: </span>
                                             <span>{(score * 100).toFixed(2)}%</span>
@@ -63,7 +63,7 @@ function DetectorResultRow({ detector, title = "貓貓辨識結果" }) {
                             <>
                                 <h3 className="detail-block-title">全部預測類別</h3>
                                 <ul className="predict-list">
-                                    {Object.entries(scoreList).map(([label, score]) => (
+                                    {Object.entries(predictList).map(([label, score]) => (
                                         <li key={label}>
                                             <span>{label}: </span>
                                             <span>{(score * 100).toFixed(2)}%</span>
@@ -76,7 +76,7 @@ function DetectorResultRow({ detector, title = "貓貓辨識結果" }) {
                 )}
 
                 {/* 建立時間 + 耗時（耗時靠右） */}
-                {(createTime || validCosts.length > 0) && (
+                {(createdAt || validCosts.length > 0) && (
                     <div className="detail-block">
                         <br/>
                         <p className="preview-cost ">
@@ -88,9 +88,9 @@ function DetectorResultRow({ detector, title = "貓貓辨識結果" }) {
                             ))}
                         </p>
                         <p className="preview-left">
-                            <span>{createTime && `圖片建立時間：${formatDateTime(createTime)}`}</span>
+                            <span>{createdAt && `圖片建立時間：${formatDateTime(createdAt)}`}</span>
                             {/* 原圖下載 */}
-                            <CrossOriginDownloadButton url={detectImage} />
+                            <CrossOriginDownloadButton url={detectPath} />
                         </p>
                     </div>
                 )}

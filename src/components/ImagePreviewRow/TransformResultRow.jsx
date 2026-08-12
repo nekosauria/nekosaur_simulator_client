@@ -6,30 +6,32 @@ function TransformResultRow({ transform, title = "風格轉換結果" }) {
     if (!transform) return null;
 
     const {
-        transform_image: transformImage,
-        is_cache: isCache,
-        create_time: createTime,
+        transform_path: transformPath,
+        is_preprocessed: isPreprocessed,
+        created_at: createdAt,
         costs,
     } = transform;
 
-    const hasBadges = Boolean(isCache);
+    const hasBadges = Boolean(isPreprocessed);
     const validCosts = (costs || []).filter(c => c.value != null);
 
     return (
-        <ImagePreview title={title} image={transformImage}>
+        <ImagePreview title={title} image={transformPath}>
             <div className="preview-details">
 
                 {/* 徽章標籤區塊 */}
                 {hasBadges && (
-                    <div className="preview-badges detail-block">
-                        {isCache === true && (
-                            <span className="preview-badge preview-badge--info">Cache Hit</span>
-                        )}
+                    <div className="detail-block">
+                        <h3 className="detail-block-title">狀態標籤</h3>
+                        <div className="preview-badges">
+                            {isPreprocessed === true && (
+                                <span className="preview-badge preview-badge--info">Cache Hit</span>
+                            )}
+                        </div>
                     </div>
                 )}
-
                 {/* 建立時間 + 耗時（耗時靠右） */}
-                {(createTime || validCosts.length > 0) && (
+                {(createdAt || validCosts.length > 0) && (
                     <div className="detail-block">
                         <br/>
                         <p className="preview-cost">
@@ -41,9 +43,9 @@ function TransformResultRow({ transform, title = "風格轉換結果" }) {
                             ))}
                         </p>
                         <p className="preview-left">
-                            <span>{createTime && `圖片建立時間：${formatDateTime(createTime)}`}</span>
+                            <span>{createdAt && `圖片建立時間：${formatDateTime(createdAt)}`}</span>
                             {/* 原圖下載 */}
-                            <CrossOriginDownloadButton url={transformImage} />
+                            <CrossOriginDownloadButton url={transformPath} />
                         </p>
                     </div>
                 )}

@@ -1,68 +1,80 @@
 // mock/uploadMock.js
 export const mockUploadData = {
     "success": true,
-    "detector": {
-        "origin": {
-            "image": "http://127.0.0.1:5001/static/images/user_upload/origin/5185d8159e1c29d205a103091a30b5a7_16_cat.jpeg",
-            "detect_image": "http://127.0.0.1:5001/static/images/user_upload/detect/maskrcnn_model/4c4ff92631ce9ebee2e30d5f65c7cb3a_glass_cat.jpg",
-            "detect_model": "maskrcnn_model",
-            "has_neko": false,
-            "is_cache": false,
-            "score_list": {
-                "cat": 0.992,
-                "teddy bear": 0.613,
-                "tie": 0.181,
-                "person": 0.059,
-                "bird": 0.051
-            },
-            "score_results": {
-                "cat": 0.992,
-                "teddy bear": 0.613
-            },
-            "create_time": "2026-08-08 19:35:29"
+    "origin": {
+        "image": {
+            "image_path": "http://127.0.0.1:5001/static/images/user_upload/origin/c6a06586912dc23d38c779261d7c9ca3_cat2.jpeg",
+            "md5_hash": "c6a06586912dc23d38c779261d7c9ca3",
+            "created_at": "2026-08-12 18:37:12"
         },
-        "similar": {
-            "image": "http://127.0.0.1:5001/static/images/user_upload/origin/5185d8159e1c29d205a103091a30b5a7_16_cat.jpeg",
-            "detect_image": "http://127.0.0.1:5001/static/images/user_upload/detect/yolo11n/15cbb5b4df706608ed1af7ffdbe062ee_cat0.jpg",
+        "detector": {
+            "detect_path": "http://127.0.0.1:5001/static/images/user_upload/detect/yolo11n/cf79d8511af62a3d0b23d3d02983476b_cat2.jpg",
+            "md5_hash": "cf79d8511af62a3d0b23d3d02983476b",
             "detect_model": "yolo11n",
-            "has_neko": true,
-            "is_cache": true,
-            "score_list": {
-                "cat": 0.992,
-                "teddy bear": 0.613,
-                "tie": 0.181,
-                "person": 0.059,
-                "bird": 0.051
+            "has_cat": true,
+            "is_preprocessed": false,
+            "predict_list": {
+                "cat": 0.933
             },
-            "score_results": {
-                "cat": 0.992,
-                "teddy bear": 0.613
+            "tag_results": {
+                "cat": 0.933
             },
-            "create_time": "2026-08-08 19:35:29"
+            "created_at": "2026-08-12 18:37:13"
+        },
+        "transform": {
+            "transform_path": "http://127.0.0.1:5001/static/images/user_upload/transform/stable-diffusion-v1-5/a89adb2dd009445404f0e370362c2c0a_cat2.jpg",
+            "md5_hash": "a89adb2dd009445404f0e370362c2c0a",
+            "transform_model": "stable-diffusion-v1-5",
+            "is_preprocessed": true,
+            "created_at": "2026-08-12 18:37:17"
+        },
+        "embedding": {
+            "embedding_model": "clip-ViT-B-32",
+            "vector_512": [],
+            "created_at": "2026-08-12 18:37:12"
         }
     },
-    "transform": {
-        "origin": {
-            "transform_image": "http://127.0.0.1:5001/static/images/user_upload/transform/stable-diffusion-v1-5/4b8155b00a14e0b57daa61e7b1a8afb1_cat0.jpg",
-            "transform_model": "sd-image-variations-diffusers",
-            "is_cache": false,
-            "create_time": "2026-08-08 19:35:51"
+    "similar": {
+        "image": {
+            "image": "http://127.0.0.1:5001/static/images/user_upload/origin/099023a8ba6bd33089e103bbb21fb98c_16_cat.jpeg",
+            "md5_hash": "099023a8ba6bd33089e103bbb21fb98c",
+            "created_at": "2026-08-12 18:26:25",
+            "distance": 0.26004021649470366,
+            "distance_percent": 74.0
         },
-        "similar": {
-            "transform_image": "http://127.0.0.1:5001/static/images/user_upload/transform/sd-image-variations-diffusers/0cc1d7287171f3ff2145fd0375997baa_16_cat.jpg",
-            "transform_model": "sd-image-variations-diffusers",
-            "is_cache": true,
-            "create_time": "2026-08-08 19:35:51"
+        "detector": {
+            "detect_path": "http://127.0.0.1:5001/static/images/user_upload/detect/yolo11n/5185d8159e1c29d205a103091a30b5a7_16_cat.jpg",
+            "md5_hash": "5185d8159e1c29d205a103091a30b5a7",
+            "detect_model": "yolo11n",
+            "has_cat": false,
+            "is_preprocessed": false,
+            "predict_list": {
+                "cat": 0.341
+            },
+            "tag_results": {},
+            "created_at": "2026-08-12 18:26:27"
+        },
+        "transform": {
+            "transform_path": "http://127.0.0.1:5001/static/images/thecatapi/transform/stable-diffusion-v1-5/f23fe74470ba2af4daf815235e9266ed_099023a8ba6bd33089e103bbb21fb98c_16_cat.jpg",
+            "md5_hash": "f23fe74470ba2af4daf815235e9266ed",
+            "transform_model": "stable-diffusion-v1-5",
+            "is_preprocessed":true,
+            "created_at": "2026-08-12 18:37:20"
+        },
+        "embedding": {
+            "embedding_model": "clip-ViT-B-32",
+            "vector_512": [],
+            "created_at": null
         }
     },
     "metrics": {
-        "image_process_count": 21,
-        "image_validate_cost": 0.015,
-        "image_embedding_cost": 0.088,
-        "origin_detector_cost": 1.246,
-        "similar_detector_cost": 4.44,
-        "origin_transform_cost": 22.132,
-        "similar_transform_cost": 11.123,
-        "api_cost": 23.398
+        "image_process_count": 131,
+        "image_validate_cost": 0.014,
+        "image_embedding_cost": 0.131,
+        "origin_detector_cost": 0.97,
+        "similar_detector_cost": 0.002,
+        "origin_transform_cost": 3.494,
+        "similar_transform_cost": 3.271,
+        "api_cost": 7.885
     }
 }

@@ -127,74 +127,124 @@ function UploadPanel({ onProcessCountUpdate, styleRefImagePaths = [] }) {
                 {message && <p className="error-text">{message}</p>}
             </div>
 
-            {/* 原始圖片 */}
+            {/* 第一大區塊：原始圖片 & 其偵測與轉換 */}
             {originImage && (
-                <div className="result-row" style={{ marginBottom: "36px" }}>
-                    <h2 className="result-row-title">Origin Image</h2>
-                    <div className="preview-grid">
-                        <ImagePreview title="原始圖片" image={originImage}>
-                            <div className="preview-details">
-                                <div className="detail-block">
-                                    <p className="preview-left">
-                                        {uploadTime && `圖片上傳時間：${formatDateTimeFromUTC(uploadTime)}`}
-                                    </p>
-                                    <p className="preview-right">
-                                        {/* 原始圖片下載 */}
-                                        <CrossOriginDownloadButton url={originImage} filename={originFilename} />
-                                    </p>
+                <div className="result-section">
+                    {/* 單獨一組：原始圖片 */}
+                    <div className="result-row">
+                        <h2 className="result-row-title">Origin Image</h2>
+                        <div className="preview-grid">
+                            <ImagePreview title="原始圖片" image={originImage}>
+                                <div className="preview-details">
+                                    <div className="detail-block">
+                                        <p className="preview-left">
+                                            {uploadTime && `圖片上傳時間：${formatDateTimeFromUTC(uploadTime)}`}
+                                        </p>
+                                        <p className="preview-right">
+                                            <CrossOriginDownloadButton url={originImage} filename={originFilename} />
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        </ImagePreview>
+                            </ImagePreview>
+                        </div>
                     </div>
+
+                    {/* 單獨一組：原圖的 偵測 + 風格轉換 */}
+                    {done && resultData && (
+                        <div className="result-row">
+                            <h2 className="result-row-title">Origin Detection & Style Transform</h2>
+                            <div className="preview-grid">
+                                <DetectorResultRow
+                                    title="原圖偵測結果"
+                                    detector={{
+                                        ...resultData.origin.detector,
+                                        costs: [
+                                            { label: "物件偵測耗時", value: resultData.metrics?.origin_detector_cost },
+                                            { label: "圖片驗證耗時", value: resultData.metrics?.image_validate_cost },
+                                        ],
+                                    }}
+                                />
+                                <TransformResultRow
+                                    title="原圖風格轉換"
+                                    transform={{
+                                        ...resultData.origin.transform,
+                                        costs: [
+                                            { label: "生成圖片耗時", value: resultData.metrics?.origin_transform_cost },
+                                        ],
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
 
-            <br/>
-            {/* 結果呈現區域 */}
+            {/* 間隔分隔 */}
+            {done && resultData && (
+                <>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                </>
+            )}
+
+            {/* 第二大區塊：相似圖片 & 其偵測與轉換 */}
             {done && resultData && (
                 <div className="result-section">
+                    {/* 單獨一組：相似圖片 */}
                     <div className="result-row">
-                        <h2 className="result-row-title">Image Detector & Similar Search</h2>
+                        <h2 className="result-row-title">Similar Image</h2>
                         <div className="preview-grid">
-                            <DetectorResultRow
-                                title="原圖偵測結果"
-                                detector={{
-                                    ...resultData.detector.origin,
-                                    costs: [
-                                        { label: "物件偵測耗時", value: resultData.metrics?.origin_detector_cost },
-                                        { label: "圖片驗證耗時", value: resultData.metrics?.image_validate_cost },
-                                    ],
-                                }}
-                            />
+                            <ImagePreview title="相似圖搜尋結果" image={resultData.similar.image.image}>
+                                <div className="preview-details">
+                                    <div className="detail-block">
+                                        <h3 className="detail-block-title">狀態標籤</h3>
+                                        <div className="preview-badges">
+                                            {resultData.similar?.image?.distance_percent != null && (
+                                                <span className="preview-badge preview-badge--info">
+                                                    {`向量相似度：${resultData.similar.image.distance_percent}%`}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div className="detail-block">
+                                        <p className="preview-left">
+                                            {resultData.similar.image.created_at &&
+                                                `圖片建立時間：${resultData.similar.image.created_at}`}
+                                        </p>
+                                        <p className="preview-right">
+                                            <CrossOriginDownloadButton
+                                                url={resultData.similar.image.image}
+                                                filename={resultData.similar.image.image.split("/").pop()}
+                                            />
+                                        </p>
+                                    </div>
+                                </div>
+                            </ImagePreview>
+                        </div>
+                    </div>
+
+                    {/* 單獨一組：相似圖的 偵測 + 風格轉換 */}
+                    <div className="result-row">
+                        <h2 className="result-row-title">Similar Detection & Style Transform</h2>
+                        <div className="preview-grid">
                             <DetectorResultRow
                                 title="相似圖偵測結果"
                                 detector={{
-                                    ...resultData.detector.similar,
+                                    ...resultData.similar.detector,
                                     costs: [
                                         { label: "物件偵測耗時", value: resultData.metrics?.similar_detector_cost },
                                         { label: "向量搜尋耗時", value: resultData.metrics?.image_embedding_cost },
                                     ],
                                 }}
                             />
-                        </div>
-                    </div>
-
-                    <div className="result-row">
-                        <h2 className="result-row-title">Style Transform</h2>
-                        <div className="preview-grid">
-                            <TransformResultRow
-                                title="原圖風格轉換"
-                                transform={{
-                                    ...resultData.transform.origin,
-                                    costs: [
-                                        { label: "生成圖片耗時", value: resultData.metrics?.origin_transform_cost },
-                                    ],
-                                }}
-                            />
                             <TransformResultRow
                                 title="相似圖風格轉換"
                                 transform={{
-                                    ...resultData.transform.similar,
+                                    ...resultData.similar.transform,
                                     costs: [
                                         { label: "生成圖片耗時", value: resultData.metrics?.similar_transform_cost },
                                     ],

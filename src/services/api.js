@@ -19,7 +19,7 @@ export async function uploadImage(file, detectModel, transformModel, styleRef) {
     formData.append("detect_model", detectModel);
     formData.append("transform_model", transformModel);
     if (styleRef) {
-        formData.append("style_ref_image", styleRef);
+        formData.append("style_ref_path", styleRef);
     }
 
     const response = await fetch(`${API_BASE_URL}/upload`, {

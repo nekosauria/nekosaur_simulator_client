@@ -1,7 +1,7 @@
 // mock/countMock.js
 export const mockCountData = {
     image_process_count: 12,
-    style_ref_image_paths: [
+    style_ref_paths: [
         "static/images/style/gray.png",
         "static/images/style/green.png",
         "static/images/style/greenn.png",

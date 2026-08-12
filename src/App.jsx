@@ -12,7 +12,7 @@ function App() {
         getCount()
             .then(data => {
                 setProcessCount(data.image_process_count);
-                setStyleRefImagePaths(data.style_ref_image_paths);
+                setStyleRefImagePaths(data.style_ref_paths);
             })
             .catch(() => {});
     }, []);

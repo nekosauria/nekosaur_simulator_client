@@ -1,68 +1,37 @@
 # 🐱🦕 Nekosaur Simulator — Client
 
-React 前端介面，連接 Nekosaur Simulator Service 服務，提供貓咪圖片上傳、風格轉換結果展示等功能。
+React 前端介面，專為 Nekosaur Simulator 設計的體驗平台。採用手繪塗鴉風格 UI，提供貓咪圖片上傳、即時狀態追蹤、YOLO 辨識結果與 Nekosaur 恐龍風格轉換展示。
 
 ---
 
-## 專案簡介
+💡 前端亮點與設計特色
 
-使用者上傳一張貓咪照片後，系統會：
-
-1. 驗證圖片是否包含貓咪
-2. 在資料庫中搜尋最相似的貓咪圖片
-3. 以 Nekosaur（恐龍風格）對原圖與相似圖進行風格轉換
-4. 將三張結果回傳並顯示在前端
+* 內建 Mock Data 模式 (src/mock)：提供獨立開發現成的 `uploadMock.js` 與 `countMock.js`，無須啟動 Flask API 或 GPU 伺服器即可模擬完整上傳、多圖回應與統計數據查詢。
+* 元件化展示層 (src/components/ImagePreviewRow)：獨立出 DetectorResultRow 與 TransformResultRow，針對 YOLO 偵測與模型風格轉換結果進行結構化呈現。
+* 跨網域下載支援 (CrossOriginDownloadButton)：實作前端跨網域圖片下載機制，方便使用者儲存風格轉換後的貓咪圖。
+* 輕量極簡架構：純 React (Vite) 搭配原生 CSS 打造客製化手繪塗鴉視覺，無額外複雜框架包袱。
 
 ---
 
-## Tech Stack
+🛠 Tech Stack
 
-| 項目 | 技術 |
-|------|------|
-| Framework | React.js |
-| 套件管理 | npm |
-| HTTP 請求 | Fetch API / Axios |
-| 後端服務 | Flask REST API |
+* Core Framework：React (Vite)
+* HTTP & Services：Axios / Fetch (src/services/api.js)
+* Mock Engine：純 JS Mock Data (src/mock/)
+* Styling：Custom CSS (src/styles.css)
 
 ---
 
-## 頁面功能
+📌 模組與元件結構
 
-### 首頁 `/`
+* UploadPanel.jsx：圖片上傳與拖曳主要互動區塊。
+* ImagePreviewRow/：
+* DetectorResultRow.jsx：展示 YOLO 標注與偵測結果。
+* TransformResultRow.jsx：展示原圖與相似圖融合恐龍風格（Nekosaur）後的轉換成果。
 
-- 顯示系統統計資訊（目前貓咪圖片總數，來自 SQLite）
-- 入口導引至上傳功能
 
-### 上傳頁面 `/upload`
-
-- 使用者選擇並上傳本地貓咪圖片
-- 呼叫後端 API 進行處理
-- 等待期間顯示載入狀態
-
-### 結果頁面
-
-上傳完成後，展示圖片：
-
-| 圖片               | 說明                       |
-|------------------|--------------------------|
-| 原始貓咪圖            | 使用者上傳原圖                  |
-| 檢測貓咪圖            | 使用者上傳原圖，加上標注框線           |
-| 相似貓咪圖            | 從 TheCatAPI 資料庫中找到的最相似貓咪 |
-| 原圖（Nekosaur 風格）  | 使用者上傳的圖片，經風格轉換後的版本       |
-| 相似圖（Nekosaur 風格） | 相似貓咪圖，經風格轉換後的版本          |
+* CrossOriginDownloadButton.jsx：處理跨網域圖片下載。
+* Stylerefmodal.jsx：風格參考與說明彈窗。
+* Header.jsx / Footer.jsx：頁首與頁尾（包含圖片總數統計展示）。
 
 ---
-
-## 後端依賴
-
-本前端需搭配 `nekosaur_simulator_server` 後端服務使用。
-
-後端說明請參考 [`nekosaur_simulator_server/README.md`](https://github.com/nekosauria/nekosaur_simulator_server/blob/main/README.md)。
-
----
-
-## 注意事項
-
-- 上傳圖片請確保包含明顯的貓咪主體，非貓咪圖片將被後端拒絕
-- 風格轉換運算量較大，請求可能需要較長等待時間，請勿重複請求
-- 系統有並發上傳限制，同時間僅允許少量請求進行風格轉換

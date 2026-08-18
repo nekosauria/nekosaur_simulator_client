@@ -2,6 +2,8 @@
 
 React 前端介面，專為 Nekosaur Simulator 設計的體驗平台。採用手繪塗鴉風格 UI，提供貓咪圖片上傳、即時狀態追蹤、YOLO 辨識結果與 Nekosaur 恐龍風格轉換展示。
 
+👉 **歡迎線上試用：** [https://simulator.nekosaur.com/](https://simulator.nekosaur.com/)
+
 ---
 
 💡 前端亮點與設計特色
@@ -26,12 +28,8 @@ React 前端介面，專為 Nekosaur Simulator 設計的體驗平台。採用手
 
 * UploadPanel.jsx：圖片上傳與拖曳主要互動區塊。
 * ImagePreviewRow/：
-* DetectorResultRow.jsx：展示 YOLO 標注與偵測結果。
-* TransformResultRow.jsx：展示原圖與相似圖融合恐龍風格（Nekosaur）後的轉換成果。
-
-
+    * DetectorResultRow.jsx：展示 YOLO 標注與偵測結果。
+    * TransformResultRow.jsx：展示原圖與相似圖融合恐龍風格（Nekosaur）後的轉換成果。
 * CrossOriginDownloadButton.jsx：處理跨網域圖片下載。
 * Stylerefmodal.jsx：風格參考與說明彈窗。
 * Header.jsx / Footer.jsx：頁首與頁尾（包含圖片總數統計展示）。
-
----

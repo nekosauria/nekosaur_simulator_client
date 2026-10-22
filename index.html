@@ -1,11 +1,43 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nekosaur simulator</title>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>nekosaur simulator</title>
+
+  <!-- ==================== 網站圖示 (Favicons) ==================== -->
+  <!-- 1. 現代瀏覽器 SVG 首選 -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- 2. 高解析度 PNG 備用 (Chrome, Firefox 等) -->
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+
+  <!-- 3. 傳統瀏覽器與舊版相容 -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+  <!-- ==================== 行動裝置 & PWA 設定 ==================== -->
+  <!-- Apple 裝置 (iPhone / iPad 主畫面捷徑) -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+  <!-- PWA / Android 應用程式清單檔案 -->
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <!-- 行動裝置主題顏色 -->
+  <meta name="theme-color" content="#ffffff" />
+
+  <!-- ==================== 社群分享圖 (Social Share) ==================== -->
+  <!-- 使用你的 ora_logo.png 作為分享連結時的預覽圖 -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://nekosaur.com/" />
+  <meta property="og:title" content="nekosaur simulator" />
+  <meta property="og:description" content="Nekosaur simulator web application." />
+  <meta property="og:image" content="https://nekosaur.com/ora_logo.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="nekosaur simulator" />
+  <meta name="twitter:description" content="Nekosaur simulator web application." />
+  <meta name="twitter:image" content="https://nekosaur.com/ora_logo.png" />
+</head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>

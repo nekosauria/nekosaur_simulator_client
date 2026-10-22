@@ -22,6 +22,8 @@ npm run build
 
 # 移動到
 # scp /dist -> /var/www/nekosaur_simulator_client/dist
+chmod 755 /var/www/nekosaur_simulator_client/dist
+chmod 644 /var/www/nekosaur_simulator_client/dist/*
 ```
 
 ### add nginx config file

@@ -22,8 +22,10 @@ npm run build
 
 # 移動到
 # scp /dist -> /var/www/nekosaur_simulator_client/dist
-chmod 755 /var/www/nekosaur_simulator_client/dist
-chmod 644 /var/www/nekosaur_simulator_client/dist/*
+# 確保所有資料夾都有正確的讀取與執行權限 (755)
+sudo find /var/www/nekosaur_simulator_client -type d -exec chmod 755 {} \;
+# 確保所有檔案都有正確的讀取權限 (644)
+sudo find /var/www/nekosaur_simulator_client -type f -exec chmod 644 {} \;
 ```
 
 ### add nginx config file

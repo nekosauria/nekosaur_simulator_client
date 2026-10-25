@@ -2,7 +2,7 @@
 
 React 前端介面，專為 Nekosaur Simulator 設計的體驗平台。採用手繪塗鴉風格 UI，提供貓咪圖片上傳、即時狀態追蹤、YOLO 辨識結果與 Nekosaur 恐龍風格轉換展示。
 
-👉 **歡迎線上試用：** [https://nekosaur.com/](https://nekosaur.com/)
+👉 **歡迎線上試用：** [https://simulator.nekosaur.com/](https://simulator.nekosaur.com/)
 
 ---
 

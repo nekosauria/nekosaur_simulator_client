@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import UploadPanel from "./components/UploadPanel";
+import AsciiGallery from "./components/Background/AsciiGallery.jsx";
 import { getCount } from "./services/api";
 
 function App() {
@@ -18,16 +19,17 @@ function App() {
     }, []);
 
     return (
-      <div className="app-container">
-        <Header />
+        <div className="app-container">
+            <AsciiGallery />
+            <Header />
 
-          <main className="main-content">
-              <UploadPanel onProcessCountUpdate={setProcessCount} styleRefImagePaths={styleRefImagePaths} />
-          </main>
+            <main className="main-content">
+                <UploadPanel onProcessCountUpdate={setProcessCount} styleRefImagePaths={styleRefImagePaths} />
+            </main>
 
-          <Footer count={processCount} />
-      </div>
-  );
+            <Footer count={processCount} />
+        </div>
+    );
 }
 
 export default App;

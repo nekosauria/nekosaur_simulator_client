@@ -24,7 +24,7 @@ function Footer({count}) {
     return (
         <footer className="footer">
             <a
-                href="https://gallery.nekosaur.com/"
+                href={import.meta.env.VITE_GALLERY_URL}
                 rel="noopener noreferrer"
             >
                 🖼️ Gallery Ghost 💫
